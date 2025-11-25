@@ -18,10 +18,26 @@ dependencies {
 
     modImplementation("maven.modrinth:cobblemon-tim-core:${property("tim_core_fabric_version")}")
 
+    annotationProcessor("net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7")
+    compileOnly("net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:${property("junit_version")}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${property("junit_version")}")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+tasks {
+    getByName<Test>("test") {
+        useJUnitPlatform()
+    }
+
+    remapSourcesJar {
+        archiveBaseName.set("${rootProject.property("archives_base_name")}-${project.name}")
+        archiveVersion.set("${rootProject.version}")
+        archiveClassifier.set("sources")
+    }
+
+    remapJar {
+        archiveBaseName.set("${rootProject.property("archives_base_name")}-${project.name}")
+        archiveVersion.set("${rootProject.version}")
+    }
 }
